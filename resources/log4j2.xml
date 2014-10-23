@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration name="defaultConfiguration" status="warn"
+	strict="true" monitorInterval="5">
+	<properties>
+		<property name="patternlayout">%d{ISO8601} [%t] %-5level %logger{36} - %msg%n%throwable{full}</property>
+		<property name="filename">/home/owen/logs/systemclient.log</property>
+		<property name="filenamePattern">/home/owen/logs/systemclient-%d{yyyy-dd-MM}-%i.log.gz
+		</property>
+	</properties>
+	<appenders>
+		<appender name="Console" type="Console" target="SYSTEM_OUT">
+			<layout type="PatternLayout" pattern="${patternlayout}" />
+		</appender>
+		<appender name="File" type="RollingFile" fileName="${filename}"
+			filePattern="${filenamePattern}" bufferedIO="true"
+			immediateFlush="true" append="true">
+			<layout type="PatternLayout" pattern="${patternlayout}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="50 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="30" />
+		</appender>
+		<appender name="AsyncFile" type="Async" bufferSize="128">
+			<appender-ref ref="File" />
+		</appender>
+	</appenders>
+	<loggers>
+		<logger name="ca.owenpeterson">
+			<appender-ref ref="AsyncFile" level="debug" />
+		</logger>
+		<root level="debug">
+			<appender-ref ref="Console" />
+		</root>
+	</loggers>
+</configuration>
