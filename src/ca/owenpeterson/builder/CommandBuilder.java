@@ -7,6 +7,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import ca.owenpeterson.utils.FormatUtils;
+
 public class CommandBuilder {
 	
 	Logger logger = LogManager.getLogger(CommandBuilder.class);
@@ -15,6 +17,8 @@ public class CommandBuilder {
 		logger.debug("Builing array for command: " + inputCommand);
 		String command = inputCommand;
 		List<String> commandFragments = new ArrayList<String>();
+		
+		command = FormatUtils.reduceWhitespace(command);
 		
 		while(StringUtils.contains(command, " ")) {
 			String fragment = StringUtils.substringBefore(command, " ");
