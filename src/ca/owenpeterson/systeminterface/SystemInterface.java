@@ -5,8 +5,6 @@ import org.apache.logging.log4j.Logger;
 
 import ca.owenpeterson.execution.CommandExecuter;
 
-
-
 public class SystemInterface {
 	
 	Logger logger = LogManager.getLogger(SystemInterface.class);
