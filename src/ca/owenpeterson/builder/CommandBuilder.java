@@ -14,11 +14,15 @@ public class CommandBuilder {
 	Logger logger = LogManager.getLogger(CommandBuilder.class);
 	
 	public List<String> buildCommandArrayFromString(String inputCommand) {
-		logger.debug("Builing array for command: " + inputCommand);
+		if (StringUtils.isBlank(inputCommand)) {
+			throw new IllegalArgumentException("input command cannot be blank!");
+		}
+		logger.debug("CommandBuilder(): buildCommandArrayFromString(): Begin. Builing array for command: " + inputCommand);
 		String command = inputCommand;
 		List<String> commandFragments = new ArrayList<String>();
 		
-		command = FormatUtils.reduceWhitespace(command);
+		logger.debug("reducing all white space down to 1.");
+		command = StringUtils.normalizeSpace(command);
 		
 		while(StringUtils.contains(command, " ")) {
 			String fragment = StringUtils.substringBefore(command, " ");
@@ -29,11 +33,13 @@ public class CommandBuilder {
 			command = StringUtils.substringAfter(command, " ");
 		}
 		
+		//add the last part of the command
 		if (command.length() != 0 || null != command) {
 			commandFragments.add(command);
 			logger.debug("Added: " + command); 
 		}
 		
+		logger.debug("CommandBuilder(): buildCommandArrayFromString(): End.");
 		return commandFragments;
 		
 	}

@@ -28,8 +28,17 @@ public class CommandExecuterTest {
 		
 		assertNotNull(actual);
 		System.out.println(actual);		
-		
-		
 	}
+	
+	@Test
+	public void testCommandExecuter_Sensros() {
+		String commandString = "sensors";
+		String actual = commandExecuter.executeCommand(commandString);
+		
+		assertNotNull(actual);
+		System.out.println(actual);		
+	}
+	
+	
 
 }
