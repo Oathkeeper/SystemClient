@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import ca.owenpeterson.builder.CommandBuilder;
+import ca.owenpeterson.exception.CommandExecutionException;
 import ca.owenpeterson.utils.FormatUtils;
 
 public class CommandExecuter {
@@ -19,7 +20,7 @@ public class CommandExecuter {
 	
 	public CommandExecuter(){};
 	
-	public String executeCommand(String command) throws IllegalArgumentException {
+	public String executeCommand(String command) throws CommandExecutionException {
 		if (StringUtils.isBlank(command)) {
 			throw new IllegalArgumentException("Command cannot be blank!");
 		}
@@ -33,7 +34,8 @@ public class CommandExecuter {
 		return output;
 	}
 	
-	public static String buildStringFromCommandArray(List<String> command) {
+	public static String buildStringFromCommandArray(List<String> command) throws CommandExecutionException {
+		logger.debug("CommandExecuter(): buildStringFromCommandArray(): Begin. Executing command from string array.");
 		String line;
 		int lineCount = 0;
 		StringBuilder cmdOutput = new StringBuilder();
@@ -61,11 +63,14 @@ public class CommandExecuter {
 			stdOut.close();
 
 		} catch (IOException iox) {
-			logger.error("Could not establish input stream.");
+			logger.error(iox.getMessage());
+			throw new CommandExecutionException("Could not establish error stream", iox);
 		} catch (NoSuchElementException nsex) {
-			logger.error(nsex);
-		} catch (Exception e) {
-			logger.error(e);
+			logger.error(nsex.getMessage());
+			throw new CommandExecutionException("Element not found.", nsex);
+		} catch (InterruptedException iex) {
+			logger.error(iex.getMessage());
+			throw new CommandExecutionException("Process was interrupted.", iex);
 		}
 		logger.debug("Number of lines processed: " + lineCount);
 

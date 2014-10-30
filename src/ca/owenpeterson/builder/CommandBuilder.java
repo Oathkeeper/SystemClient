@@ -34,7 +34,7 @@ public class CommandBuilder {
 		}
 		
 		//add the last part of the command
-		if (command.length() != 0 || null != command) {
+		if (StringUtils.isNotBlank(command)) {
 			commandFragments.add(command);
 			logger.debug("Added: " + command); 
 		}
